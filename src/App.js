@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
+import {NavBar} from 'interra-data-catalog-components'
+
+
 import Home from "./Home"
 import Search from "./Search"
 
@@ -18,6 +21,7 @@ class App extends Component {
       return (
         <ThemeProvider theme={defaultTheme}>
             <div className="App">
+              <NavBar/>
               <Router>
                 <div>
                   <Route exact={true} path='/' render={()=>(home)} />
