@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
-import {NavBar} from 'interra-data-catalog-components'
+import {Header} from 'interra-data-catalog-components'
+import {Footer} from 'interra-data-catalog-components'
 
 
 import Home from "./Home"
 import Search from "./Search"
 
 import { ThemeProvider } from 'styled-components'
-import defaultTheme from './theme'
-import './styles.css'
+import defaultTheme from './theme/default'
+import './theme/styles.scss'
 
 class App extends Component {
 
@@ -21,7 +22,7 @@ class App extends Component {
       return (
         <ThemeProvider theme={defaultTheme}>
             <div className="App">
-              <NavBar/>
+              <Header/>
               <Router>
                 <div>
                   <Route exact={true} path='/' render={()=>(home)} />
@@ -29,6 +30,7 @@ class App extends Component {
                   <Route exact={true} path='/search' render={()=>(search)}/>
                 </div>
               </Router>
+              <Footer/>
             </div>
         </ThemeProvider>
       );

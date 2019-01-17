@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 
 import {HomePageIconList} from 'interra-data-catalog-components'
+import {Hero} from 'interra-data-catalog-components'
+
 
 const axios = require('axios');
 
@@ -24,7 +26,10 @@ class Home extends Component {
 
     render() {
         return (
-          <HomePageIconList state={ this.state.state } items={ this.state.items } />
+          <div>
+            <Hero/>
+            <HomePageIconList state={ this.state.state } items={ this.state.items } />
+          </div>
         );
     }
 }
