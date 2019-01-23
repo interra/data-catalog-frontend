@@ -46,6 +46,9 @@ class Home extends Component {
 
                     return item
                 });
+
+                console.log(items)
+
                 this.setState({ "items": items, "state": "ok" });
             });
     }
