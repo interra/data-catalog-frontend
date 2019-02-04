@@ -1,37 +1,50 @@
 import React, { Component } from 'react';
 
-import {HomePageIconList} from 'interra-data-catalog-components'
-import {Hero} from 'interra-data-catalog-components'
-
-
-const axios = require('axios');
+import { HomePageIconList } from 'interra-data-catalog-components';
+import { Hero } from 'interra-data-catalog-components';
+import backend from './services/backend';
+import Loader from 'react-loader';
 
 class Home extends Component {
 
-    state = {
-        "items": [],
-        "state": "loading"
-    }
+	state = {
+    "items": [],
+		"loaded": false
+	}
 
-    componentDidMount() {
-        axios.get(`http://dkan.local/api/v1/organization`)
-            .then(res => {
-                const items = res.data.map(x => {
-                    var item = {identifier: x}
-                    return item
-                });
-                this.setState({ "items": items, "state": "ok" });
-            });
-    }
+  async fetchData() {
+		const { data } = await backend.get(`/collections/organization.json`);
+		const items = data.map(x => {
+			let item = {
+				identifier: x.identifier,
+        ref: `/search/organization/${x.identifier}`,
+        title: x.name,
+        icon: x.image,
+			}
+			return item
+		});
+		this.setState({
+      items,
+      "loaded": true
+    });
+	}
 
-    render() {
-        return (
-          <div>
-            <Hero/>
-            <HomePageIconList state={ this.state.state } items={ this.state.items } />
-          </div>
-        );
-    }
+	componentDidMount() {
+		this.fetchData();
+	}
+
+	render() {
+    const { items, loaded } = this.state;
+
+		return (
+			<>
+				<Hero/>
+				<Loader loaded={loaded}>
+					<HomePageIconList items={ items } />
+				</Loader>
+			</>
+		);
+	}
 }
 
 export default Home;
