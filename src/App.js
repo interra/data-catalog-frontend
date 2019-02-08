@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
-
 import {Header} from 'interra-data-catalog-components'
 import {Footer} from 'interra-data-catalog-components'
-
-
 import Home from "./Home"
 import Search from "./Search"
 import Dataset from "./Dataset";
-
-import { css } from '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 import Theme from './theme/default'
 import { ThemeProvider } from 'styled-components'
