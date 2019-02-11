@@ -20,7 +20,7 @@ self.__precacheManifest = [
     "url": "interra.github.io/data-catalog-frontend/static/css/1.ad5791d0.chunk.css"
   },
   {
-    "revision": "89e2e528e83f971d9fcb793e751b402a",
+    "revision": "f74e415eae9a0a070623394f06a767ae",
     "url": "interra.github.io/data-catalog-frontend/index.html"
   }
 ];
