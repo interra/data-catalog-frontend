@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "interra.github.io/data-catalog-frontend/precache-manifest.23570d15fe30a2364c63c76058574b39.js"
+  "/data-catalog-frontend/precache-manifest.4a0f953c085ac0f01892b20b6580b000.js"
 );
 
 workbox.clientsClaim();
@@ -28,7 +28,7 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute("interra.github.io/data-catalog-frontend/index.html", {
+workbox.routing.registerNavigationRoute("/data-catalog-frontend/index.html", {
   
   blacklist: [/^\/_/,/\/[^\/]+\.[^\/]+$/],
 });
