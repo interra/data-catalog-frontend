@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Interra Catalog",
+  "name": "Interra Open Data catalog",
   "icons": [
     {
       "src": "favicon.ico",

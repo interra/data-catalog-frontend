@@ -99,13 +99,13 @@ export class simpleSearch extends Search {
         // We want to flatten the results so there is one big array instead of a
         // combo of array results.
         if (Array.isArray(docR)) {
-          docR.forEach((item, x) => {
-            facetsTotal[facet].push(item); // eslint-disable-line no-loop-func
+          docR.forEach((item, x) => {// eslint-disable-line no-loop-func
+            facetsTotal[facet].push(item);
           });
         }
         else {
           if (docR && Object.keys(docR).length !== 0 ) {
-            facetsTotal[facet].push(docR); // eslint-disable-line no-loop-func
+            facetsTotal[facet].push(docR) 
           }
         }
       }
@@ -124,7 +124,7 @@ export class simpleSearch extends Search {
     for (var facet in facets) {
       facetsResults[facet] = {};
       if (facetsTotal[facet]) {
-        facetsTotal[facet].forEach((i) => {
+        facetsTotal[facet].forEach((i) => { // eslint-disable-line no-loop-func
           facetsResults[facet][i] = (facetsResults[facet][i]||0)+1;
         });
       }

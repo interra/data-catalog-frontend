@@ -4,6 +4,7 @@ import {SearchList} from 'interra-data-catalog-components';
 import {InputLarge} from 'interra-data-catalog-components';
 import {FacetList} from 'interra-data-catalog-components';
 import search from './services/search';
+const url = process.env.PUBLIC_URL;
 
 class Search extends Component {
 
@@ -16,11 +17,7 @@ class Search extends Component {
     "facetsResults": []
   }
 
-  facets = { 
-    "keyword": {
-      "label": "Tags",
-      "field": "keyword.title"
-    },
+  facets = {
     "theme": {
       "label": "Category",
       "field": "theme.title"
@@ -28,6 +25,10 @@ class Search extends Component {
     "org": {
       "label": "Organization",
       "field": "publisher.name"
+    },
+    "keyword": {
+      "label": "Tags",
+      "field": "keyword.title"
     },
     "format": {
       "label": "Format",
@@ -83,7 +84,7 @@ class Search extends Component {
         modified: x.doc.modified,
         description: x.doc.description,
         title: x.doc.title,
-        ref: `/dataset/${x.doc.identifier}`,
+        ref: `${url}/dataset/${x.doc.identifier}`,
       }
       return item;
     });
@@ -120,23 +121,32 @@ class Search extends Component {
     const facetListProps = {
       query,
       facets,
+      url,
       facetsResults,
       selectedFacets,
     };
 
     return (
-      <>
-        <InputLarge onChange={this.onChange.bind(this)} value={this.state.query} facets={this.state.selectedFacets} />
-        <select className="form-control input-sm" onChange={this.relevanceUpdate.bind(this)}>
-          <option value="relevance">Relevance</option>
-          <option value="date">Date</option>
-          <option value="alpha">Alphabetical</option>
-        </select>
+      <div className="containter-fluid m-5">
         <Loader loaded={loaded}>
-          <SearchList message={message} items={items} />
-          <FacetList {... facetListProps} />
+        <div className="row">
+
+            <div className="col-md-9 col-sm-12 p-5">
+              <InputLarge onChange={this.onChange.bind(this)} value={this.state.query} facets={this.state.selectedFacets} />
+              <SearchList message={message} items={items} />
+            </div>
+            <div className="col-md-3 col-sm-12 p-5">
+              <select className="form-control input-sm" onChange={this.relevanceUpdate.bind(this)}>
+                <option value="relevance">Relevance</option>
+                <option value="date">Date</option>
+                <option value="alpha">Alphabetical</option>
+              </select>
+              <FacetList {... facetListProps} />
+            </div>
+
+        </div>
         </Loader>
-      </>
+      </div>
     );
   }
 }

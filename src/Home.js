@@ -16,8 +16,8 @@ class Home extends Component {
 		const { data } = await backend.get(`/collections/organization.json`);
 		const items = data.map(x => {
 			let item = {
-				identifier: x.identifier,
-        ref: `/search/organization/${x.identifier}`,
+				identifier: x.name,
+        ref: `search?org=${x.name}`,
         title: x.name,
         icon: x.image,
 			}

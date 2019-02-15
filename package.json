@@ -2,11 +2,12 @@
   "name": "data-catalog-frontend",
   "version": "0.0.1",
   "private": true,
-  "homepage": "/data-catalog-frontend/build",
+  "homepage": "https://interra.github.io/data-catalog-frontend",
   "dependencies": {
     "axios": "^0.18.0",
+    "bootstrap": "^4.2.1",
     "elasticlunr": "^0.9.5",
-    "interra-data-catalog-components": "0.0.13",
+    "interra-data-catalog-components": "0.0.16",
     "node-sass": "^4.11.0",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
@@ -19,7 +20,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -29,5 +32,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "gh-pages": "^2.0.1"
+  }
 }
