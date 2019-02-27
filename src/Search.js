@@ -92,9 +92,6 @@ class Search extends Component {
 
   async onChange(field, value) {
     const { index, searchEngine, query, selectedFacets } = this.state;
-    if (value === "" && query) {
-      value = query;
-    }
     const values = await searchEngine.query(value, selectedFacets, this.facets, index);
     const facetsResults = await searchEngine.loadFacets(this.facets, values);
     const items = await this.normalize(values);
