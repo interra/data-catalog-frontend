@@ -4,8 +4,7 @@ import {SearchList} from 'interra-data-catalog-components';
 import {InputLarge} from 'interra-data-catalog-components';
 import {FacetList} from 'interra-data-catalog-components';
 import search from './services/search';
-const url = process.env.PUBLIC_URL;
-console.log(url);
+const url = process.env.REACT_APP_INTERRA_SITE_URL;
 
 class Search extends Component {
 

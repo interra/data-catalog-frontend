@@ -3,7 +3,7 @@ import Wrapper from './Wrapper';
 import logo from '../../assets/images/logo.svg';
 import SearchInput from '../SearchInput';
 
-const url = process.env.PUBLIC_URL;
+const url = process.env.REACT_APP_INTERRA_SITE_URL ? process.env.REACT_APP_INTERRA_SITE_URL : "/";
 
 class Header extends React.Component {
 

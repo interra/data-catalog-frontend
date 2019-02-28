@@ -15,6 +15,7 @@ import Topics from "./Topics";
 import Theme from './theme/default'
 import { ThemeProvider } from 'styled-components'
 import GlobalStyles from './theme/globalStyles';
+const url = process.env.REACT_APP_INTERRA_SITE_URL;
 
 class App extends Component {
 
@@ -31,7 +32,7 @@ class App extends Component {
       <ThemeProvider theme={Theme}>
         <div className="App">
           <Header/>
-          <Router basename={process.env.PUBLIC_URL}>
+          <Router basename={url}>
             <div>
               <NavBar/>
               <Route exact={true} path='/' render={()=>(home)} />
