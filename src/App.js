@@ -8,6 +8,7 @@ import {Footer} from 'interra-data-catalog-components'
 import Home from "./Home"
 import Search from "./Search"
 import Dataset from "./Dataset";
+import Organization from "./Org";
 import About from "./About";
 import Topics from "./Topics";
 
@@ -37,6 +38,7 @@ class App extends Component {
               <Route exact={true} path='/home' render={()=>(home)} />
               <Route exact={true} path='/search' render={()=>(search)}/>
               <Route exact={true} path='/dataset/:id' render={({match})=>(<Dataset id={match.params.id}/>)}/>
+              <Route exact={true} path='/organization/:id' render={({match})=>(<Organization id={match.params.id}/>)}/>
               <Route exact={true} path='/about' render={()=>(about)} />
               <Route exact={true} path='/topics' render={()=>(topics)} />
             </div>

@@ -5,6 +5,7 @@ import {InputLarge} from 'interra-data-catalog-components';
 import {FacetList} from 'interra-data-catalog-components';
 import search from './services/search';
 const url = process.env.PUBLIC_URL;
+console.log(url);
 
 class Search extends Component {
 
@@ -36,29 +37,13 @@ class Search extends Component {
     }
   };
 
-  async fetchData() {
+  async fetchData(query = "", selectedFacets = []) {
     const searchType = 'simpleSearch';
     const searchEngine = new search[searchType]();
     const index = await searchEngine.init();
     let facetsResults = await searchEngine.loadFacets(this.facets, index);
     const initialItems = await this.normalize(index);
     let items = initialItems;
-    const params = new URLSearchParams(window.location.search);
-    let query = "";
-    let selectedFacets = [];
-
-    for(let pair of params.entries()) {
-      let term = pair[0];
-      let value = pair[1];
-      if (term === 'q') {
-        query = value;
-      }
-      else {
-        if (Object.keys(this.facets).includes(term)) {
-          selectedFacets.push([term,value]);
-        }
-      }
-    }
     if (query || selectedFacets.length > 0) {
       items = await searchEngine.query(query, selectedFacets, this.facets, index);
       facetsResults = await searchEngine.loadFacets(this.facets, items);
@@ -72,7 +57,7 @@ class Search extends Component {
       facetsResults,
       index,
       searchEngine,
-      "loaded": true
+      loaded: true
     });
   }
 
@@ -91,7 +76,7 @@ class Search extends Component {
   }
 
   async onChange(field, value) {
-    const { index, searchEngine, query, selectedFacets } = this.state;
+    const { index, searchEngine, selectedFacets } = this.state;
     const values = await searchEngine.query(value, selectedFacets, this.facets, index);
     const facetsResults = await searchEngine.loadFacets(this.facets, values);
     const items = await this.normalize(values);
@@ -107,7 +92,23 @@ class Search extends Component {
 
   componentDidMount() {
     if (!this.state.index) {
-      this.fetchData();
+			const params = new URLSearchParams(window.location.search);
+			let selectedFacets = this.props.selectedFacets ? this.props.selectedFacets : [];
+			let query = this.props.query ? this.props.query : "";
+
+			for(let pair of params.entries()) {
+				let term = pair[0];
+				let value = pair[1];
+				if (term === 'q') {
+					query = value;
+				}
+				else {
+					if (Object.keys(this.facets).includes(term)) {
+						selectedFacets.push([term,value]);
+					}
+				}
+			}
+      this.fetchData(query, selectedFacets);
     }
   }
 
@@ -115,10 +116,11 @@ class Search extends Component {
     const { items, loaded, query, selectedFacets, facetsResults } = this.state;
     const message = query ? items.length + " datasets found for " + query : items.length + " datasets";
     const facets = this.facets;
+    const searchUrl = this.props.url ? this.props.url : `${url}/search`;
     const facetListProps = {
       query,
       facets,
-      url,
+      url: searchUrl,
       facetsResults,
       selectedFacets,
     };
@@ -128,11 +130,11 @@ class Search extends Component {
         <Loader loaded={loaded}>
         <div className="row">
 
-            <div className="col-md-9 col-sm-12 p-5">
+            <div className="col-md-9 col-sm-12">
               <InputLarge onChange={this.onChange.bind(this)} value={this.state.query} facets={this.state.selectedFacets} />
               <SearchList message={message} items={items} />
             </div>
-            <div className="col-md-3 col-sm-12 p-5">
+            <div className="col-md-3 col-sm-12">
               <select className="form-control input-sm" onChange={this.relevanceUpdate.bind(this)}>
                 <option value="relevance">Relevance</option>
                 <option value="date">Date</option>

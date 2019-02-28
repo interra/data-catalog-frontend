@@ -1,8 +1,8 @@
 const defaultTheme = {
   backgroundColor: "#f9fafb",
   borderColor: "#A4B9C6",
-  primaryDark: "#003366", // blueDark.
-  primary: "#0A77BD", // blue.
+  primaryDark: "#005489", // blueDark.
+  primary: "#0E76BC", // blue.
   primaryLight: "#27AAE1", // blueLight.
   primaryDust: "#F4F9FB", // blueDust.
   secondaryDark: "#dfb100", // yellowDark.
@@ -16,8 +16,8 @@ const defaultTheme = {
   textColor: "#3B3B3B",
   linkColor: "#0A77BD",
   linkHoverColor: "#003366",
-  navBarBackgroundColor: "#007BBC",
-  navBarBackgroundImage: "linear-gradient(to right, #007BBC 0%, #133F75 100%)",
+  navBarBackgroundColor: "#0E76BC",
+  navBarBackgroundImage: "",
   navBarLink: "#FFFFFF",
   navBarLinkActive: "#FFFFFF",
   navBarLinkHoverBack: "#002245",
@@ -30,7 +30,11 @@ const defaultTheme = {
   footerBackgroundColor: "#004466",
   footerText: "#FFFFFF",
   footerLink: "#FFFFFF",
-  footerLinkHover: "#afc0cc"
+  footerLinkHover: "#afc0cc",
+  info: "#16A2B7",
+  warning: "#FEC108",
+  danger: "#DB3545",
+  success: "#28A645"
 };
 
 export default defaultTheme;

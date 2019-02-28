@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import { HomePageIconList } from 'interra-data-catalog-components';
 import { Hero } from 'interra-data-catalog-components';
 import backend from './services/backend';
@@ -8,8 +7,8 @@ import Loader from 'react-loader';
 class Home extends Component {
 
 	state = {
-    "items": [],
-		"loaded": false
+    items: [],
+		loaded: false
 	}
 
   async fetchData() {
