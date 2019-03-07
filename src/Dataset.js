@@ -70,7 +70,7 @@ class Dataset extends Component {
         preview: 100,
         header: true
       });
-});
+    });
     //const resource = await DataJS.open(url);
    // const rowStream = await resource.rows({keyed: true})
    // const values = await toArray(rowStream)
