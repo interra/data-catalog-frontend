@@ -6,6 +6,10 @@ import { Organization } from 'interra-data-catalog-components';
 import { FileDownload } from 'interra-data-catalog-components';
 import { Table } from 'interra-data-catalog-components';
 import { Tags } from 'interra-data-catalog-components';
+import DataTable from './components/DataTable';
+//import toArray from 'stream-to-array'
+import Papa from 'papaparse';
+
 import backend from './services/backend';
 
 
@@ -13,31 +17,73 @@ class Dataset extends Component {
 
   state = {
     item: {},
+    resources: [],
     loaded: false
   }
 
   async fetchData() {
     const { data } = await backend.get("/collections/dataset/" + this.props.id + ".json");
     const item = Object.assign(data);
-
+    const resources = item.distribution;
     this.setState({
       item,
+      resources,
       loaded: true
     });
+    Promise.all(resources.map(async (resource) => { 
+      if ('format' in resource && resource.format === 'csv') {
+        const data = await this.fileRows(resource.downloadURL);
+        resource.values = data;
+        resource.columns = this.prepareColumns(data[0]);
+      }
+      return resource;
+    })).then((resources) => {
+      this.setState({
+        resources
+      });
+    })
   }
+
+  prepareColumns(item) {
+    return Object.keys(item).map((i) => {
+      return {
+        Header: i,
+        accessor: i 
+      }
+    });
+  }
+  
 
   componentDidMount() {
     this.fetchData();
   }
 
+  async fileRows(url) {
+
+    return new Promise((res, rej) => {
+      
+      Papa.parse(url, {
+        complete: (data) => {
+          res(data.data);
+        },
+        download: true,
+        preview: 100,
+        header: true
+      });
+});
+    //const resource = await DataJS.open(url);
+   // const rowStream = await resource.rows({keyed: true})
+   // const values = await toArray(rowStream)
+    //return values; 
+  }
+
   render() {
-    const { item, loaded } = this.state;
+    const { item, loaded, resources } = this.state;
 
     const orgName = 'publisher' in item ? item.publisher.name : "";
     const orgImage = 'publisher' in item ? item.publisher.image : "";
     const orgId = 'publisher' in item ? item.publisher.identifier : "";
     const orgDesc = 'publisher' in item ? item.publisher.description : "";
-    const resource = 'distribution' in item ? item.distribution : [];
     const tag = 'keyword' in item ? item.keyword : [];
     const theme = 'theme' in item ? item.theme : [];
     const contactName = 'contactPoint' in item ? item.contactPoint.fn : "";
@@ -51,11 +97,15 @@ class Dataset extends Component {
     const num_columns = 'datastore_statistics' in item ? item.datastore_statistics.columns : "";
     const columns = 'columns' in item ? item.columns : [];
 
-
-
     const Resources = () => {
-      return resource.map(r => {
-        return <FileDownload resource={r} key={r.title}/>;
+      return resources.map(r => {
+        const values = 'values' in r ? r.values : [];
+        const columns = 'columns' in r ? r.columns : [];
+        const dataKey = `${r.title}-${r.format}`;
+        if ('format' in r && r.format === 'csv') {
+          return <div key={dataKey}><FileDownload resource={r} key={r.title}/><DataTable key={dataKey} data={values} columns={columns} /></div>;
+        }
+        return <div key={dataKey}><FileDownload resource={r} key={r.title}/></div>;
       });
     };
 
@@ -69,7 +119,7 @@ class Dataset extends Component {
     let t1 = {};
     let t2 = {};
 
-    if (orgName.length > 0) {
+    if (orgName && orgName.length > 0) {
       t1.publisher = { label: "Publisher" };
       t2.publisher = orgName;
     }
