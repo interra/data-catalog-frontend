@@ -31,7 +31,7 @@ class App extends Component {
       <ThemeProvider theme={Theme}>
         <div className="App">
           <Header/>
-          <Router basename={process.env.PUBLIC_URL}>
+          <Router>
             <div>
               <NavBar/>
               <Route exact={true} path='/' render={()=>(home)} />
