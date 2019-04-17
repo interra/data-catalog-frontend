@@ -37,7 +37,7 @@ export default class NavBar extends React.Component {
                 <RRlink activeClassName="active" to="/search">Datasets</RRlink>
               </NavItem>
               <NavItem>
-                <RRlink activeClassName="active" to="/topics">Topics</RRlink>
+                <RRlink activeClassName="active" to="/groups">Groups</RRlink>
               </NavItem>
               <NavItem>
                 <RRlink activeClassName="active" to="/about">About</RRlink>

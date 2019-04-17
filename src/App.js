@@ -10,7 +10,7 @@ import Search from "./Search"
 import Dataset from "./Dataset";
 import Organization from "./Org";
 import About from "./About";
-import Topics from "./Topics";
+import Groups from "./Groups";
 
 import Theme from './theme/default'
 import { ThemeProvider } from 'styled-components'
@@ -23,7 +23,7 @@ class App extends Component {
     const home =   <Home />
     const search = <Search />
     const about =  <About />
-    const topics = <Topics />
+    const groups = <Groups />
 
     return (
       <div>
@@ -40,7 +40,7 @@ class App extends Component {
               <Route exact={true} path='/dataset/:id' render={({match})=>(<Dataset id={match.params.id}/>)}/>
               <Route exact={true} path='/organization/:id' render={({match})=>(<Organization id={match.params.id}/>)}/>
               <Route exact={true} path='/about' render={()=>(about)} />
-              <Route exact={true} path='/topics' render={()=>(topics)} />
+              <Route exact={true} path='/groups' render={()=>(groups)} />
             </div>
           </Router>
           <Footer/>

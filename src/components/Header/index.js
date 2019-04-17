@@ -11,7 +11,7 @@ class Header extends React.Component {
       return (
         <Wrapper className="container-fluid">
           <div className="branding">
-            <a className='logo' href={url}><img alt="logo" src={logo}/></a>
+            <a className='logo' href="/"><img alt="logo" src={logo}/></a>
           </div>
           <SearchInput/>
         </Wrapper>

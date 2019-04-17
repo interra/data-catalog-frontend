@@ -58,37 +58,55 @@ export class simpleSearch extends Search {
     return results.length;
   }
 
-  getFacetValue(doc, facet, facets) {
-    let fields = facets[facet].field.split('.');
-    let docR = {};
-    let docRArray = [];
+  getFacetValueHelper(doc, field) {
+    if ((typeof doc) == "object") {
+      let pieces = field.split('.')
+      let current = pieces.shift()
 
-    fields.forEach(function(field, i) {
-      // If we are at the end of the field array just return the value, otherwise
-      // we just get the entire array.
-      if (fields.length - 1 === i && Array.isArray(docR)) {
-        docRArray = docR;
-        docRArray.forEach(function(item, x) {
-          docR[x] = item[field];
-        });
-      } else {
-        // Clone the object or array if the docR hasn't been recorded yet.
-        if (Array.isArray(doc[field])) {
-          docR = doc[field].slice(0);
+      if (current === '*') {
+       if(Array.isArray(doc)) {
+         let values = []
+         let i
+
+         let join = pieces.join('.')
+
+         for (i = 0; i < doc.length; i++) {
+           values = values.concat(this.getFacetValueHelper(doc, i + "." + join));
+         }
+
+         return values;
+       }
+       else {
+         return [];
+       }
+      }
+
+      if (doc[current] !== undefined) {
+        // This is the property no need to recurse further.
+        if (pieces.length === 0) {
+          let value = doc[current]
+          return [value]
         }
         else {
-          if (doc[field] !== undefined) {
-            docR = Object.keys(docR).length === 0 ? Object.assign({}, doc[field]) : docR[field];
-          } else {
-            docR = Object.keys(docR).length === 0 ? ' ' : docR[field];
-          }
+          return [].concat(this.getFacetValueHelper(doc[current], pieces.join('.')))
         }
       }
-    });
-    return docR;
+      else {
+        return [];
+      }
+    }
+    else {
+      return []
+    }
+  }
+
+  getFacetValue(doc, facet, facets) {
+    let value = this.getFacetValueHelper(doc, facets[facet].field)
+    return value
   }
 
   getFacetInitialTotal(facets, results) {
+
     const that = this;
     let facetsTotal = [];
     results.forEach((result) => {
@@ -99,20 +117,19 @@ export class simpleSearch extends Search {
         // We want to flatten the results so there is one big array instead of a
         // combo of array results.
         if (Array.isArray(docR)) {
-          docR.forEach((item, x) => {// eslint-disable-line no-loop-func
+          docR.forEach((item, x) => { // eslint-disable-line no-loop-func
             facetsTotal[facet].push(item);
           });
         }
         else {
           if (docR && Object.keys(docR).length !== 0 ) {
-            facetsTotal[facet].push(docR) 
+            facetsTotal[facet].push(docR);
           }
         }
       }
     });
     return facetsTotal;
   }
-
 
   async loadFacets(facets, results) {
     const that = this;
@@ -192,10 +209,10 @@ export class simpleSearch extends Search {
     let faceted = [];
     const that = this;
     if (selectedFacets && selectedFacets.length > 0) {
-      selectedFacets.forEach(function(selectedFacet) {
+      selectedFacets.forEach((selectedFacet) => {
         let term = selectedFacet[0];
         let value = selectedFacet[1];
-        faceted = index.filter(function(item) {
+        faceted = index.filter((item) => {
           let facetValue = that.getFacetValue(item.doc, term, facets);
           if (Array.isArray(facetValue)) {
             if (Object.values(facetValue).indexOf(value) > -1) {
@@ -227,25 +244,20 @@ export class simpleSearch extends Search {
 }
 /**
 export class elasticSearch extends Search {
-
-
   *init() {
     const index = elasticsearch.Client({
       host: 'https://ENDPOINT.REGION.es.amazonaws.com/INDEX',
     });
     return index;
   }
-
   *query(query, index) {
     const docs = yield this.esSearch(query, index);
   }
-
   *getAll(index) {
     const that = this;
     const docs = yield this.esSearch("*", index);
     return docs;
   }
-
   esSearch(query, index) {
     const body = {
       "query": {
@@ -272,11 +284,9 @@ export class elasticSearch extends Search {
       console.trace(error.message);
     });
   }
-
   *resultCount(results) {
     return this.count;
   }
-
 }
 */
 

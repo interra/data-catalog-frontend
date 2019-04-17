@@ -1,19 +1,83 @@
 import React, { Component } from 'react';
-import Loader from 'react-loader';
+import Loader from 'react-loader-advanced';
+import LoadingSpin from 'react-loading-spin';
 import { Title } from 'interra-data-catalog-components';
 import { Text } from 'interra-data-catalog-components';
 import { Organization } from 'interra-data-catalog-components';
 import { FileDownload } from 'interra-data-catalog-components';
 import { Table } from 'interra-data-catalog-components';
 import { Tags } from 'interra-data-catalog-components';
+import DataTable from './components/DataTable';
 import backend from './services/backend';
-
+import datastore from './services/datastore';
 
 class Dataset extends Component {
 
   state = {
-    item: {},
-    loaded: false
+    item: {
+      title: "",
+      description: "",
+      publisher: {
+        name: "Example Publisher"
+      }
+    },
+    resources: [],
+    show: true
+  }
+
+  async pageChange(page) {
+    let index=0;
+    const resources = Object.assign([], this.state.resources);
+    resources[index].values = [];
+    this.setState({
+     resources
+    });
+    const resource = this.state.resources[index] ? this.state.resources[index] : [];
+    const res = new datastore['file'](resource.downloadURL);
+    await res.fetch();
+    const queried = await res.query(resource.filter,null,null, resource.pageSize, page, resource.sort);
+    resources[index].values = queried;
+    resources[index].page = page;
+    this.setState({
+      resources
+    });
+  }
+
+  async filterChange(filter) {
+    let index=0;
+    const resources = Object.assign([], this.state.resources);
+    resources[index].values = [];
+    this.setState({
+      resources
+    });
+    const resource = this.state.resources[index] ? this.state.resources[index] : [];
+    const res = new datastore['file'](resource.downloadURL);
+    await res.fetch();
+    const queried = await res.query(filter,null,null, resource.pageSize, resource.page, resource.sort);
+    resource.pages = Math.ceil(queried.length / resource.pageSize);
+    resources[index].values = queried;
+    resources[index].filter = filter;
+    this.setState({
+      resources
+    });
+  }
+
+  async sortedChange(sort) {
+    let index=0;
+    const resources = Object.assign([], this.state.resources);
+    resources[index].values = [];
+    this.setState({
+      resources
+    });
+    const resource = this.state.resources[index] ? this.state.resources[index] : [];
+    const res = new datastore['file'](resource.downloadURL);
+    await res.fetch();
+    const queried = await res.query(resource.filter,null,null, resource.pageSize, resource.page, sort);
+    resources[index].values = queried;
+    resources[index].sort = sort;
+    this.setState({
+      resources
+    });
   }
 
   async fetchData() {
@@ -22,7 +86,36 @@ class Dataset extends Component {
 
     this.setState({
       item,
-      loaded: true
+      show: false
+    });
+    const resources = item.distribution;
+    this.setState({
+      resources
+    });
+    Promise.all(resources.map(async (resource) => {
+      if ('format' in resource && resource.format === 'csv') {
+        const file = new datastore['file'](resource.downloadURL);
+        const data = await file.fetch();
+        resource.pageSize = 10;
+        resource.pages = Math.ceil(data.length / resource.pageSize);
+        resource.values = data;
+        resource.page = 0;
+        resource.columns = this.prepareColumns(data[0]);
+      }
+      return resource;
+    })).then((resources) => {
+      this.setState({
+        resources
+      });
+    })
+  }
+
+  prepareColumns(item) {
+    return Object.keys(item).map((i) => {
+      return {
+        Header: i,
+        accessor: i
+      }
     });
   }
 
@@ -31,122 +124,135 @@ class Dataset extends Component {
   }
 
   render() {
-    const { item, loaded } = this.state;
-
+    const { item, show, resources } = this.state;
     const orgName = 'publisher' in item ? item.publisher.name : "";
     const orgImage = 'publisher' in item ? item.publisher.image : "";
-    const orgId = 'publisher' in item ? item.publisher.identifier : "";
     const orgDesc = 'publisher' in item ? item.publisher.description : "";
-    const resource = 'distribution' in item ? item.distribution : [];
     const tag = 'keyword' in item ? item.keyword : [];
     const theme = 'theme' in item ? item.theme : [];
-    const contactName = 'contactPoint' in item ? item.contactPoint.fn : "";
-    const contactEmail = 'contactPoint' in item ? item.contactPoint.hasEmail : "";
-    const issued = 'issued' in item ? item.issued : "";
-    const modified = 'modified' in item ? item.modified : "";
-    const identifier = 'identifier' in item ? item.identifier : "";
-    const accessLevel = 'accessLevel' in item ? item.accessLevel : "";
-    const landingPage = 'landingPage' in item ? item.landingPage : "";
     const num_rows = 'datastore_statistics' in item ? item.datastore_statistics.rows : "";
     const num_columns = 'datastore_statistics' in item ? item.datastore_statistics.columns : "";
     const columns = 'columns' in item ? item.columns : [];
 
-
-
     const Resources = () => {
-      return resource.map(r => {
-        return <FileDownload resource={r} key={r.title}/>;
+      return resources.map((r, i) => {
+        const values = 'values' in r ? r.values : [];
+        const data = values.slice(0,10);
+        const columns = 'columns' in r ? r.columns : [];
+        const dataKey = `${r.title}-${r.format}`;
+        const show = values.length > 0 ? false : true;
+        const pageSize = values.length === 0 || values.length > 10 ? 10  : values.length + 1;
+        const pages = r.pages;
+        if ('format' in r && r.format === 'csv') {
+          return <div key={dataKey}>
+              <FileDownload resource={r} key={r.title}/>
+              <strong>Rows:</strong> {values.length}
+                <DataTable
+                  index={i}
+                  key={dataKey}
+                  loading={show}
+                  pageSize={pageSize}
+                  pages={pages}
+                  data={data}
+                  sortedChange={this.sortedChange.bind(this)}
+                  filterChange={this.filterChange.bind(this)}
+                  pageChange={this.pageChange.bind(this)}
+                  columns={columns} />
+            </div>;
+        }
+        return <div key={dataKey}><FileDownload resource={r} key={r.title}/></div>;
       });
     };
 
     const Topic = () => {
       return theme.map(t => {
         const topicLink = `<a className="theme" href="../search?theme=${t.title}">${t.title}</a>`;
-        return <Text key={t} value={topicLink} />;
+        return <Text key={t.title} value={topicLink} />;
       });
     };
 
-    let t1 = {};
-    let t2 = {};
-
-    if (orgName.length > 0) {
-      t1.publisher = { label: "Publisher" };
-      t2.publisher = orgName;
-    }
-    if (identifier.length > 0) {
-      t1.identifier = { label: "Identifier" };
-      t2.identifier = identifier;
-    }
-    if (issued.length > 0) {
-      t1.issued = { label: "Issued" };
-      t2.issued = issued;
-    }
-    if (modified.length > 0) {
-      t1.modified = { label: "Last Update" };
-      t2.modified = modified;
-    }
-    if (contactName.length > 0 && contactEmail.length > 0) {
-      t1.conatct = { label: "Contact" };
-      t2.conatct = `<a href="${contactEmail}">${contactName}</a>`;
-    }
-    if (accessLevel.length > 0) {
-      t1.access = { label: "Public Access Level"};
-      t2.access = accessLevel;
-    }
-    if (landingPage.length > 0) {
-      t1.homepage = { label: "Homepage URL"};
-      t2.homepage = `<a href="${landingPage}">${landingPage}</a>`;
-    }
-
+    // Process content for 'What's in this Dataset' table.
     const labelsT1 = {
       rows: {
         label: num_rows
       }
     }
-
-
     const valuesT1 = {
       rows: num_columns
     }
 
-
-    var labelsT2 = {}
-
-    var valuesT2 = {}
+    // Process content for 'Columns in this Dataset' table.
+    const labelsT2 = {}
+    const valuesT2 = {}
 
     columns.forEach((value, index) => {
       labelsT2[index] = {"label": value}
       valuesT2[index] = "String"
     })
 
+    // Process content for 'Additional Information' table.
+    const labelsT3 = {}
+    const valuesT3 = {}
+
+    if (orgName && orgName.length > 0) {
+      labelsT3.publisher = { label: "Publisher" };
+      valuesT3.publisher = orgName;
+    }
+    if ('identifier' in item && item.identifier) {
+      labelsT3.identifier = { label: "Identifier" };
+      valuesT3.identifier = item.identifier;
+    }
+    if ('issued' in item && item.issued) {
+      labelsT3.issued = { label: "Issued" };
+      valuesT3.issued = item.issued;
+    }
+    if ('modified' in item && item.modified) {
+      labelsT3.modified = { label: "Last Update" };
+      valuesT3.modified = item.modified;
+    }
+    if ('contactPoint' in item && item.contactPoint && item.contactPoint.fn) {
+      labelsT3.contact = { label: "Contact" };
+      valuesT3.contact = item.contactPoint.fn;
+    }
+    if ('contactPoint' in item && item.contactPoint && item.contactPoint.hasEmail) {
+      labelsT3.email = { label: "Contact E-mail" };
+      valuesT3.email = `<a href="${item.contactPoint.hasEmail}">${item.contactPoint.hasEmail}</a>`;
+    }
+    if ('accessLevel' in item && item.accessLevel) {
+      labelsT3.access = { label: "Public Access Level"};
+      valuesT3.access = item.accessLevel;
+    }
+    if ('landingPage' in item && item.landingPage) {
+      labelsT3.homepage = { label: "Homepage URL"};
+      valuesT3.homepage = `<a href="${item.landingPage}">${item.landingPage}</a>`;
+    }
+
     return (
-      <div className="page container-fluid">
-        <Loader loaded={loaded}>
-        <div className="row">
-
-          <div className="col-md-3 col-sm-12 p-5">
-            <Organization name={orgName} image={orgImage} description={orgDesc} identifier={orgId} />
-          </div>
-          <div className="results-list col-md-9 col-sm-12 p-5">
-            <Title title={item.title} />
-            <div className="theme-wrapper">
-              { Topic() }
+      <>
+        <div className="dataset-page container-fluid">
+          <div className="row">
+            <div className="col-md-3 col-sm-12 p-5">
+              <Organization name={orgName} image={orgImage} description={orgDesc} />
             </div>
-            <Text value={item.description} />
-            { Resources() }
-            <Tags tags={tag} />
-            <Table configuration={labelsT1} data={valuesT1} title="What's in this Dataset?" th1="Rows" th2="Columns" />
-            <Table configuration={labelsT2} data={valuesT2} title="Columns in this Dataset" th1="Column Name" th2="Type" />
-            <Table configuration={t1} data={t2} />
-
+            <div className="results-list col-md-9 col-sm-12 p-5">
+              <Title title={item.title} />
+                <Loader backgroundStyle={{backgroundColor: "#f9fafb"}} foregroundStyle={{backgroundColor: "#f9fafb"}} show={show} message={<LoadingSpin width={"3px"} primaryColor={"#007BBC"}/>}>
+                  <div className="theme-wrapper">
+                    { Topic() }
+                  </div>
+                  <Text value={item.description} />
+                  { Resources() }
+                  <Tags tags={tag} path="../../../search?keyword=" />
+                  <Table configuration={labelsT1} data={valuesT1} title="What's in this Dataset?" th1="Rows" th2="Columns" tableclass="table-one" />
+                  <Table configuration={labelsT2} data={valuesT2} title="Columns in this Dataset" th1="Column Name" th2="Type" tableclass="table-two" />
+                  <Table configuration={labelsT3} data={valuesT3} tableclass="table-three" />
+                </Loader>
+            </div>
           </div>
-
         </div>
-        </Loader>
-      </div>
+      </>
     );
   }
 }
 
 export default Dataset;
-

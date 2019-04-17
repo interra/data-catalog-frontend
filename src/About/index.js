@@ -1,5 +1,6 @@
 import React from 'react';
 import Wrapper from './Wrapper';
+import { FontAwesomeIcon } from 'interra-data-catalog-components';
 
 class About extends React.Component {
 
@@ -12,10 +13,10 @@ class About extends React.Component {
           <div className="section-content">
             <div className="block">
               <p>This is the default state of the Interra Catalog Front-end.</p>
-              <p>This tool helps create open data catogs using React and other libraries.</p>
+              <p>This tool helps create open data catalogs using React and other libraries.</p>
             </div>
             <div className="block info">
-              <p>Update this about page before publishing. </p>
+              <p><FontAwesomeIcon icon="info-circle" fill="#27AAE1"/> Update this about page before publishing. </p>
             </div>
           </div>
         </div>
