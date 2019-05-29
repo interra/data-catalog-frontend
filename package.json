@@ -7,7 +7,7 @@
     "axios": "^0.18.0",
     "bootstrap": "^4.2.1",
     "elasticlunr": "^0.9.5",
-    "interra-data-catalog-components": "0.0.30",
+    "interra-data-catalog-components": "0.0.31",
     "lodash": "^4.17.11",
     "node-sass": "^4.11.0",
     "papaparse": "^4.6.3",
