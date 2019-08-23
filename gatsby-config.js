@@ -1,5 +1,5 @@
 module.exports = {
-  // assetPrefix: `/data-catalog-frontend/public`,
+  assetPrefix: `/data-catalog-frontend/public`,
   siteMetadata: {
     title: `DKAN Demo`,
     description: `A DKAN2 Demo site`,
