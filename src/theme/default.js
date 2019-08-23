@@ -6,8 +6,8 @@ const defaultTheme = {
   primaryLight: "#27AAE1", // blueLight.
   primaryDust: "#dce4ef", // blueDust.
   secondaryDark: "#dfb100", // yellowDark.
-  secondary: "#f9c642", // yellow.
-  secondaryLight: "#fff1d2", // yellowLight.
+  secondary: "#FFD666", // yellow.
+  secondaryLight: "#FFF8E4", // yellowLight.
   grayDark: "#323A45",
   grayMedium: "#A7AAAC",
   grayLight: "#dddddd",
@@ -30,7 +30,9 @@ const defaultTheme = {
   footerBackgroundColor: "#162e51",
   footerText: "#FFFFFF",
   footerLink: "#FFFFFF",
-  footerLinkHover: "#afc0cc",
+  footerLinkHover: "#FFFFFF",
+  fontText: "'Rubik','Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif",
+  fontHeading: "'Rubik','Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif",
   info: "#16A2B7",
   warning: "#FEC108",
   danger: "#DB3545",

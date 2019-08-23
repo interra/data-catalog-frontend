@@ -2,22 +2,28 @@ import styled from "styled-components";
 
 export default styled.div`
   background-color: ${props => props.theme.navBarBackgroundColor};
-  background-image: none;
+  background-image: ${props => props.theme.navBarBackgroundImage};
   position: relative;
   display: block;
   clear: both;
   z-index: 1;
-  .navbar {
-    padding: 0 15px;
+  &:after {
+    content: "";
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;
+    background: rgba(0, 0, 0, 0.2);
   }
-  .dropdown-toggle::after {
-    margin-left: .4em;
-    margin-top: .8rem;
+  .navbar-expand-md {
+    padding: 0;
   }
   .navbar-toggler {
-    margin: 5px;
+    margin: .5rem 1rem;
   }
-  li.nav-item a {
+  .nav-item a {
     display: inline-flex;
     padding: 0.9em 1.2em;
     text-decoration: none;
@@ -50,10 +56,12 @@ export default styled.div`
   }
 
   @media screen and (max-width: 768px) {
-    .navbar-nav .nav-link {
-      padding-right: 10px;
-      padding-left: 10px;
+    .nav-item {
       display: block;
+      width: 100%;
+      a {
+        display: block;
+      }
     }
   }
 `;

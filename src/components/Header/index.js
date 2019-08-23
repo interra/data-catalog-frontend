@@ -1,22 +1,27 @@
-import React from 'react';
-import Wrapper from './Wrapper';
-import logo from '../../assets/images/logo.svg';
-import SearchInput from '../SearchInput';
+import React, { Component } from 'react'
+import Wrapper from './Wrapper'
+import logo from '../../assets/images/logo.svg'
 
-const url = process.env.PUBLIC_URL;
+class Header extends Component {
 
-class Header extends React.Component {
+  render() {
 
-    render() {
-      return (
-        <Wrapper className="container-fluid">
-          <div className="branding">
-            <a className='logo' href="/"><img alt="logo" src={logo}/></a>
+    return (
+      <Wrapper className="container-fluid">
+        <div className="branding row">
+          <div className="col-lg-7 col-md-12">
+            <a href="/" title="getdkan.com" className="logo">
+              <img className="logo" alt="logo" src={logo}/>
+            </a>
           </div>
-          <SearchInput/>
-        </Wrapper>
-      );
-    }
+          <div className="col-lg-5 col-md-12">
+            
+          </div>
+        </div>
+      </Wrapper>
+    );
+  }
+
 }
 
 export default Header;

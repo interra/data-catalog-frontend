@@ -1,62 +1,41 @@
-import React from 'react';
-import { NavLink as RRlink } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import React, { useState } from "react";
+import { Link } from "gatsby";
 import {
   Collapse,
   Navbar,
   NavbarToggler,
   Nav,
-  NavItem } from 'reactstrap';
+  NavItem } from "reactstrap";
 import Wrapper from './Wrapper';
 
-export default class NavBar extends React.Component {
-  constructor(props) {
-    super(props);
 
-    this.toggle = this.toggle.bind(this);
-    this.state = {
-      isOpen: false
-    };
-  }
-  toggle() {
-    this.setState({
-      isOpen: !this.state.isOpen
-    });
-  }
-  render() {
-    return (
-      <Wrapper className="main-navigation">
-        <Navbar expand="md navbar-dark">
-          <NavbarToggler onClick={this.toggle} />
-          <Collapse isOpen={this.state.isOpen} navbar>
-            <Nav className="mr-auto">
-              <NavItem>
-                <RRlink activeClassName="active" exact to="/">Home</RRlink>
-              </NavItem>
-              <NavItem>
-                <RRlink activeClassName="active" to="/search">Datasets</RRlink>
-              </NavItem>
-              <NavItem>
-                <RRlink activeClassName="active" to="/groups">Groups</RRlink>
-              </NavItem>
-              <NavItem>
-                <RRlink activeClassName="active" to="/about">About</RRlink>
-              </NavItem>
-            </Nav>
-          </Collapse>
-        </Navbar>
-      </Wrapper>
-    );
-  }
+
+const NavBar = () => {
+  const [isOpen, toggleOpen] = useState(false);
+
+  return (
+    <Wrapper className="container-fluid main-navigation">
+      <Navbar expand="md navbar-dark">
+        <NavbarToggler onClick={() => toggleOpen(!isOpen)} />
+        <Collapse isOpen={isOpen} navbar>
+          <Nav className="mr-auto">
+            <NavItem>
+              <Link activeClassName="active" to="/">Home</Link>
+            </NavItem>
+            <NavItem>
+              <Link activeClassName="active" to="/search">Datasets</Link>
+            </NavItem>
+            <NavItem>
+              <Link activeClassName="active" to="/topics">Topics</Link>
+            </NavItem>
+            <NavItem>
+              <Link activeClassName="active" to="/about">About</Link>
+            </NavItem>
+          </Nav>
+        </Collapse>
+      </Navbar>
+    </Wrapper>
+  );
 }
 
-Navbar.propTypes = {
-  light: PropTypes.bool,
-  dark: PropTypes.bool,
-  fixed: PropTypes.string,
-  color: PropTypes.string,
-  role: PropTypes.string,
-  expand: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-  tag: PropTypes.oneOfType([PropTypes.func, PropTypes.string])
-  // pass in custom element to use
-}
+export default NavBar;

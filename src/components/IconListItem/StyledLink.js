@@ -1,6 +1,7 @@
 import styled from "styled-components";
+import { Link } from "gatsby";
 
-const StyledLink = styled.a`
+const StyledLink = styled(Link)`
   border: 1px solid ${props => props.theme.borderColor};
   border-radius: 8px;
   margin-bottom: 20px;
@@ -8,19 +9,12 @@ const StyledLink = styled.a`
   background-color: white;
   position: relative;
   display: block;
-  color: ${props => props.theme.linkColor};
+  color: ${props => props.theme.primary};
   font-size: 1.15em;
   padding: 1em 2em;
   min-width: 260px;
   text-decoration: none;
   text-align: center;
-  &.active,
-  &:hover {
-    background-color: ${props => props.theme.secondaryLight};
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1) !important;
-    text-decoration: none;
-    transform: translateY(-3px);
-  }
   img {
     max-width: 150px;
     max-height: 100px;
@@ -28,6 +22,20 @@ const StyledLink = styled.a`
   }
   svg {
     margin: 10px;
+    fill: ${props => props.theme.primary};
+    &:focus,
+    &:hover {
+      fill: ${props => props.theme.primaryDark};
+    }
+  }  
+  &:focus,
+  &:hover {
+    color: ${props => props.theme.primaryDark};
+    background-color: ${props => props.theme.secondaryLight};
+    text-decoration: none;
+    svg {
+      fill: ${props => props.theme.primaryDark};
+    }
   }
 `;
 

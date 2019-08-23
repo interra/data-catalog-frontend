@@ -10,7 +10,7 @@ function IconList(props) {
   // If we have items, render them.
   if (props.items) {
       content = props.items.map((item) => (
-          <ComponentToRender key={`item-${item.identifier}`} item={item} />
+        <ComponentToRender key={i} item={item} />
       ));
   } else {
       // Otherwise render a single component

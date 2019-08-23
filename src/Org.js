@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import Search from "./Search"
 import backend from './services/backend';
-import Loader from 'react-loader';
+import Loader from 'react-loader-advanced';
+import LoadingSpin from 'react-loading-spin';
+
 const url = process.env.PUBLIC_URL;
 
 class Home extends Component {
@@ -9,7 +11,7 @@ class Home extends Component {
   state = {
     item: {},
 		selectedFacets: [],
-    loaded: false
+    show: true
   }
 
   async fetchData() {
@@ -20,7 +22,7 @@ class Home extends Component {
     this.setState({
       selectedFacets,
       item,
-      loaded: true
+      show: false
     });
   }
 
@@ -29,7 +31,7 @@ class Home extends Component {
   }
 
 	render() {
-    const { item, loaded, selectedFacets } = this.state;
+    const { item, show, selectedFacets } = this.state;
     const searchUrl = `${url}/organization/${this.props.id}`;
     const styles = {
       margin: '30px 30px 0px 30px',
@@ -37,16 +39,18 @@ class Home extends Component {
     };
 
 		return (
-      <Loader loaded={loaded}>
-        <div className="page container-fluid" style={styles}>
-            <div className="org-info">
-              <h1>{item.name}</h1>
-              <p>{item.description}</p>
-            </div>
-        </div>
-        <Search selectedFacets={selectedFacets} url={searchUrl} />
-      </Loader>
-
+      <>
+        <Navbar className="sa"/>wtf
+        <Loader hideContentOnLoad backgroundStyle={{backgroundColor: "#f9fafb"}} foregroundStyle={{backgroundColor: "#f9fafb"}} show={show} message={<LoadingSpin width={"3px"} size="30px" primaryColor={"#007BBC"}/>}>
+          <div className="page container-fluid" style={styles}>
+              <div className="org-info">
+                <h1>{item.name}</h1>
+                <p>{item.description}</p>
+              </div>
+          </div>
+          <Search selectedFacets={selectedFacets} url={searchUrl} />
+        </Loader>
+      </>
 		);
 	}
 }
