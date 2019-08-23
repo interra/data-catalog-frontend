@@ -36,6 +36,11 @@ exports.createPages = async ({ actions: { createPage } }) => {
         path: `/dataset/${dataset.identifier}`,
         component: path.resolve('./src/templates/dataset/index.js'),
         context: { dataset }
+      });
+      createPage({
+        path: `/dataset/${dataset.identifier}/api`,
+        component: path.resolve('./src/templates/dataset/api.js'),
+        context: { dataset }
       })
     })
   })
@@ -52,6 +57,10 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
           },
           {
             test: /react-loading-spin/,
+            use: loaders.null(),
+          },
+          {
+            test: /swagger-ui-react/,
             use: loaders.null(),
           },
         ],
