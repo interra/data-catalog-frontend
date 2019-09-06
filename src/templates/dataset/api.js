@@ -1,13 +1,15 @@
 import React, { Component } from "react";
+import { Link } from "gatsby";
 import Loader from "react-loader-advanced";
 import LoadingSpin from "react-loading-spin";
 import {
   Title,
+  NavBar,
   Organization } from "interra-data-catalog-components";
 import Layout from "../../components/Layout";
 import backend from "../../services/backend";
-import Navbar from "../../components/NavBar";
 import ApiDocs from "../../components/ApiDocs";
+import links from "../../assets/menu.json";
 
 class ApiDocsSpecific extends Component {
 
@@ -49,7 +51,10 @@ class ApiDocsSpecific extends Component {
 
     return (
       <Layout path={this.props.path} title={item.title}>
-        <Navbar/>
+        <NavBar
+          navItems={links.main.map((item) => (<Link activeClassName="active" to={item.url}>{item.label}</Link>))}
+          customClasses="container-fluid main-navigation"  
+        />
         <div className="dataset-page container-fluid">
           <div className="row">
             <div className="col-md-3 col-sm-12 p-5">

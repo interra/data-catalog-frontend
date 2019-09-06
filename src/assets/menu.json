@@ -1,19 +1,29 @@
 {
-  "header": [
+  "main": [
     {
-      "label": "DKAN2 Docs",
-      "url": "https://dkan2.readthedocs.io/en/latest/",
-      "target": "_blank"
+      "label": "Home",
+      "url": "/",
+      "target": "_top"
     },
     {
-      "label": "DKAN 7 Demo",
-      "url": "https://demo.getdkan.com",
-      "target": "_blank"
+      "label": "Datasets",
+      "url": "/search",
+      "target": "_top"
     },
     {
-      "label": "CivicActions",
-      "url": "https://civicactions.com",
-      "target": "_blank"
+      "label": "Publishers",
+      "url": "/groups",
+      "target": "_top"
+    },
+    {
+      "label": "About",
+      "url": "/about",
+      "target": "_top"
+    },
+    {
+      "label": "API",
+      "url": "/api",
+      "target": "_top"
     }
   ],
   "footer1": [
@@ -35,10 +45,6 @@
     {
       "label": "Data.gov",
       "url": "https://data.gov"
-    },
-    {
-      "label": "Interra",
-      "url": "https://interra.io"
     }
   ],
   "footer2": [
