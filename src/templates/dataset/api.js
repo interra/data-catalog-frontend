@@ -59,6 +59,9 @@ class ApiDocsSpecific extends Component {
           <div className="row">
             <div className="col-md-3 col-sm-12 p-5">
               <Organization name={orgName} image={orgImage} description={orgDesc} />
+              <div className="block-wrapper">
+                Back to the <Link to={`dataset/${item.identifier}`}>dataset</Link>.
+              </div>
             </div>
             <div className="results-list col-md-9 col-sm-12 p-5">
               <Title title={item.title} />

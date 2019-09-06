@@ -35,6 +35,13 @@ const GlobalStyles = createGlobalStyle`
     h2 { font-size: 2.8rem; } //28px
     h3 { font-size: 2.0rem; } // 20px
 
+    .block-wrapper {
+      padding: 1em;
+      text-align: center;
+      border: 1px solid ${defaultTheme.borderColor};
+      margin-bottom: 32px;
+      background: #fff;
+    }
     .theme-wrapper {
       margin-bottom: 10px;
       display: flex;
