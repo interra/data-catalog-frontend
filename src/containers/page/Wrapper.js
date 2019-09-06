@@ -1,5 +1,6 @@
 import styled from "styled-components";
- const Wrapper = styled.div`
+
+const Wrapper = styled.div`
   .section {
     margin: 50px 0;
     padding: 0;
@@ -8,12 +9,26 @@ import styled from "styled-components";
     border-radius: 20px;
   }
   .section-content {
+    padding: 25px;
     display: flex;
     align-items: flex-start;
     align-content: stretch;
     flex-direction: row;
     flex-wrap: nowrap;
-    justify-content: space-evenly;
+    justify-content: space-between;
+    .swagger-ui {
+      width: 100%;
+      div.info {
+        margin: 0 0 10px;
+      }
+      .information-container,
+      .block {
+        padding: 0;
+      }
+    }
+    .swagger {
+      padding: 0;
+    }
   }
   .block {
     position: relative;
@@ -31,10 +46,8 @@ import styled from "styled-components";
     padding: 25px;
     border-bottom: 1px solid ${props => props.theme.grayLight};
   }
-  .section-content {
-    padding: 25px;
-  }
-   @media screen and (max-width: 768px) {
+
+  @media screen and (max-width: 768px) {
     .section-content {
       flex-wrap: wrap;
     }
@@ -43,4 +56,5 @@ import styled from "styled-components";
     }
   }
 `;
- export default Wrapper;
+
+export default Wrapper;

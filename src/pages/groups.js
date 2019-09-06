@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "gatsby";
 import Layout from "../components/Layout";
-import Wrapper from "../containers/groups/Wrapper";
+import Wrapper from "../containers/page/Wrapper";
 import { FontAwesomeIcon, NavBar } from "interra-data-catalog-components";
 import links from "../assets/menu.json";
 

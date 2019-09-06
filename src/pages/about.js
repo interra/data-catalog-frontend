@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "gatsby";
-import { FontAwesomeIcon, NavBar } from "interra-data-catalog-components";
+import { FontAwesomeIcon, NavBar, Title } from "interra-data-catalog-components";
 import Layout from "../components/Layout";
-import Wrapper from "../containers/about/Wrapper";
+import Wrapper from "../containers/page/Wrapper";
 import links from "../assets/menu.json";
 
 const About = ({path}) => (
@@ -13,7 +13,7 @@ const About = ({path}) => (
     />
     <Wrapper className="page container-fluid">
       <div className="section">
-        <h1>About this site</h1>
+        <Title headerLevel="h1" title="About this site" />
         <div className="section-content">
           <div className="block">
             <p>This is the default state of the DKAN data catalog.</p>
