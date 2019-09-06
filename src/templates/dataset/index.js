@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "gatsby";
 import Loader from "react-loader-advanced";
 import LoadingSpin from "react-loading-spin";
 import { 
@@ -6,13 +7,14 @@ import {
   Text,
   Organization,
   FileDownload,
+  NavBar,
   Table } from "interra-data-catalog-components";
 import Tags from "../../components/Tags";
 import Layout from "../../components/Layout";
 import DataTable from "../../components/DataTable";
 import backend from "../../services/backend";
 import datastore from "../../services/datastore";
-import Navbar from "../../components/NavBar";
+import links from "../../assets/menu.json";
 
 class Dataset extends Component {
 
@@ -147,6 +149,7 @@ class Dataset extends Component {
 
     const Resources = () => {
       return resources.map((r, i) => {
+
         const values = 'values' in r.data ? r.data.values : [];
         const data = values.slice(0,10);
         const columns = 'columns' in r ? r.data.columns : [];
@@ -240,11 +243,17 @@ class Dataset extends Component {
 
     return (
       <Layout path={this.props.path} title={item.title}>
-        <Navbar/>
+        <NavBar
+          navItems={links.main.map((item) => (<Link activeClassName="active" to={item.url}>{item.label}</Link>))}
+          customClasses="container-fluid main-navigation"  
+        />
         <div className="dataset-page container-fluid">
           <div className="row">
             <div className="col-md-3 col-sm-12 p-5">
               <Organization name={orgName} image={orgImage} description={orgDesc} />
+              <div className="block-wrapper">
+                The information on this page is also available via the <Link to={`dataset/${item.identifier}/api`}>API</Link>.
+              </div>
             </div>
             <div className="results-list col-md-9 col-sm-12 p-5">
               <Title title={item.title} />
