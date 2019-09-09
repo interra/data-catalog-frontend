@@ -1,9 +1,6 @@
 import React from "react";
 import SwaggerUI from "swagger-ui-react";
 import "swagger-ui-react/swagger-ui.css";
-// @TODO: Remove once https://github.com/swagger-api/swagger-ui/pull/5541 has
-//   been merged and the swagger-ui-react package has been updated at npm.
-import "../../assets/css/bootstrap-fix.css";
 
 const ApiDocs = ({uuid}) => {
 
