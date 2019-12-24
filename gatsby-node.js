@@ -2,8 +2,8 @@ const path = require('path');
 const axios = require('axios').default;
 
 exports.createPages = async ({ actions: { createPage } }) => {
-  const { data: collections } = await axios.get('http://dkan/api/v1/theme');
-  const { data: jsonData } = await axios.get('http://dkan/api/v1/dataset');
+  const { data: collections } = await axios.get('http://dkan/api/1/metastore/schemas/theme/items');
+  const { data: jsonData } = await axios.get('http://dkan/api/1/metastore/schemas/dataset/items');
 
   createPage({
     path: `/`,
@@ -11,15 +11,15 @@ exports.createPages = async ({ actions: { createPage } }) => {
     context: { collections }
   })
 
-  createPage({
+  /*createPage({
     path: `/search`,
     component: path.resolve('./src/templates/search/index.js'),
     context: {  }
-  })
+  })*/
 
-  await Promise.all(jsonData.map(data => {
+  /*await Promise.all(jsonData.map(data => {
     return new Promise((resolve, reject) => {
-      axios.get(`http://dkan/api/v1/datastore/${data.identifier}?values=both`)
+      axios.get(`http://dkan/api/1/datastore/${data.identifier}?values=both`)
       .then(function (response) {
         // handle success
         resolve(response.data);
@@ -43,7 +43,7 @@ exports.createPages = async ({ actions: { createPage } }) => {
         context: { dataset }
       })
     })
-  })
+  })*/
 }
 
 exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {

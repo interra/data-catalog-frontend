@@ -4,6 +4,7 @@
   "private": true,
   "version": "0.0.1",
   "dependencies": {
+    "@civicactions/data-catalog-components": "github:getdkan/data-catalog-components#reduce-reuse2",
     "@cmsgov/design-system-core": "^3.0.0",
     "axios": "^0.19.0",
     "babel-plugin-styled-components": "^1.10.6",
@@ -18,7 +19,6 @@
     "gatsby-plugin-styled-components": "^3.1.2",
     "gatsby-source-filesystem": "^2.1.5",
     "gatsby-transformer-sharp": "^2.2.3",
-    "interra-data-catalog-components": "^0.0.40",
     "lodash": "^4.17.15",
     "lunr": "^2.3.6",
     "node-sass": "^4.11.0",
@@ -42,9 +42,7 @@
     "styled-components": "^4.3.2",
     "swagger-ui-react": "^3.23.6"
   },
-  "devDependencies": {
-    "prettier": "^1.18.2"
-  },
+  "devDependencies": {},
   "keywords": [
     "gatsby"
   ],

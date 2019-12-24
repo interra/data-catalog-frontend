@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "gatsby";
 import Layout from "../components/Layout";
 import Wrapper from "../containers/page/Wrapper";
-import { NavBar } from "interra-data-catalog-components";
+import { NavBar } from "@civicactions/data-catalog-components";
 import links from "../assets/menu.json";
 
 export default ({path}) => (

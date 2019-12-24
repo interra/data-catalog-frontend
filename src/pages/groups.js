@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "gatsby";
 import Layout from "../components/Layout";
 import Wrapper from "../containers/page/Wrapper";
-import { FontAwesomeIcon, NavBar } from "interra-data-catalog-components";
+import { FontAwesomeIcon, NavBar } from "@civicactions/data-catalog-components";
 import links from "../assets/menu.json";
 
 const Groups = ({path}) => (
